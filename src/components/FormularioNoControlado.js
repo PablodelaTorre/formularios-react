@@ -3,9 +3,7 @@ import { useRef } from "react";
 const FormularioNoControlado = () => {
     const formulario = useRef(null);
 
-    // Formulario no controlado
-    const handleSubmit = (e) => {
-        // console.log(formulario.current);
+    const handleSubmit = (e) => { 
         e.preventDefault();
 
         const datos = new FormData(formulario.current);
