@@ -5,29 +5,45 @@ const Form = () => {
         todoNombre: "",
         todoDescripcion: "",
         todoEstado: "pendiente",
+        todoCheck: false,
     });
+
+    const [error, setError] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value, checked, type } = e.target;
+
+        setTodo((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value,
+        }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(todo);
+        const { todoNombre, todoDescripcion } = todo;
+
+        // pequeña validación
+        if (!todoNombre.trim() || !todoDescripcion.trim()) {
+            console.log("campos vacíos");
+            setError(true);
+            return;
+        } else {
+            setError(false);
+        }
+
+        // Enviar todo a un array!
     };
 
-    const handleChange = (e) => {
-        // console.log(e.target.name);
-        // console.log(e.target.value);
-        // setTodo({ ...todo, [e.target.name]: e.target.value });
-        setTodo((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
-    };
-
-    // console.log(todo);
+    const PintarError = () => (
+        <div className="alert alert-danger">Todos los campos obligatorios</div>
+    );
 
     return (
         <div className="container mt-2">
-            <h2>Formulario Controlado</h2>
+            <h2>Formulario</h2>
+            {error && <PintarError />}
             <form onSubmit={handleSubmit}>
                 <input
                     className="form-control mb-2"
@@ -54,6 +70,22 @@ const Form = () => {
                     <option value="pendiente">Pendiente</option>
                     <option value="completado">Completado</option>
                 </select>
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="flexCheckDefault"
+                        checked={todo.todoCheck}
+                        onChange={handleChange}
+                        name="todoCheck"
+                    />
+                    <label
+                        className="form-check-label"
+                        htmlFor="flexCheckDefault"
+                    >
+                        Dar prioridad
+                    </label>
+                </div>
                 <button className="btn btn-primary" type="submit">
                     Agregar
                 </button>
